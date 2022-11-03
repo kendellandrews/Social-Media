@@ -1,13 +1,13 @@
 import {useState, useContext} from 'react'
 import axios from 'axios'
-import AuthContext from './store/authContext'
+import AuthContext from '../store/authContext.js'
 
 
 const Auth = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [register, setRegister] = useState(true)
-    const authCtx = useContext(AuthContex)
+    const authCtx = useContext(AuthContext)
     
     const submitHandler = e => {
         e.preventDefault()
@@ -17,10 +17,11 @@ const Auth = () => {
             password
         }
         
-        const url = 'https://socialmtn.devmountain.com'
+        const url = 'https://localhost:4000'
+
         if (register) {
             axios
-              .post("https://socialmtn.devmountain.com/register", user)
+              .post("https://socialmtn.devmountain.com/register", body)
               .then((res) => {
                 console.log(res.data);
                 authCtx.login(res.data.token, res.data.exp, res.data.userId);
@@ -31,7 +32,7 @@ const Auth = () => {
               });
           } else if (!register) {
             axios
-              .post("https://socialmtn.devmountain.com/login", user)
+              .post("https://socialmtn.devmountain.com/login", body)
               .then((res) => {
                 console.log(res.data);
                 authCtx.login(res.data.token, res.data.exp, res.data.userId);
@@ -41,12 +42,10 @@ const Auth = () => {
                 setUsername("");
               });
           }
-
-    authCtx.login(res.data.token, res.data.exp, res.data.userId)
 }
 
        console.log('submitHandler called')
-   }
+   
  
    return (
        <main>
@@ -70,6 +69,6 @@ const Auth = () => {
             <button className='form-btn' onClick={() => setRegister (!register)}>Need to {register ? 'Login' : 'Sign Up'}?</button>
        </main>
    )
-
+   }
  
 export default Auth
